@@ -21,24 +21,23 @@ function gerarInformativo() {
     const tecnico = document.getElementById('tecnico').value.toUpperCase();
 
     const slaHoras = alarme === "AFRET" ? 24 : 4;
-    const horaAcionamento = obterHoraAtual(); // Apenas hora
+    const horaAcionamento = obterHoraAtual();
     const previsaoTec = adicionarHoras(prev_tecnico);
     const sla = adicionarHoras(slaHoras);
 
     const resultado = `
-        
         INFORMATIVO DE ACIONAMENTO
         ANALISTA NOC: ${analista}
         SUPERVISOR: ${supervisor}
         CN: ${cn}
         ESTAÇÃO: ${estacao}
-        ALARME FALHA: ${alarme}
+        ALARME: ${alarme}
         AMI: ${ami}
         INC: ${ral}
-        HORA DO ACIONAMENTO DO TÉCNICO: ${horaAcionamento}
-        PREVISÃO DO TÉCNICO: ${previsaoTec}
+        HORA DO ACIONAMENTO: ${horaAcionamento}
+        PREVISÃO: ${previsaoTec}
         SLA: ATÉ ${sla}
-        TÉCNICO ACIONADO: ${tecnico}
+        TÉCNICO: ${tecnico}
     `;
 
     document.getElementById('resultado').innerHTML = resultado;
