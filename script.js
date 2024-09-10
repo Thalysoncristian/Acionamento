@@ -26,10 +26,10 @@ function gerarInformativo() {
     const sla = adicionarHoras(slaHoras);
 
     const resultado = `
-        GERADO COM SUCESSO....
+        
         INFORMATIVO DE ACIONAMENTO
         ANALISTA NOC: ${analista}
-        SUPERVISOR DE SOBREAVISO: ${supervisor}
+        SUPERVISOR: ${supervisor}
         CN: ${cn}
         ESTAÇÃO: ${estacao}
         ALARME FALHA: ${alarme}
