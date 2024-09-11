@@ -1,61 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Acionamento</title>
+    <title>Informativo de Acionamento - STTE</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="setCurrentTime()">
+    <div class="container">
+        <h1>Informativo de Acionamento - STTE</h1>
 
-    <h1>Gerador de Acionamento</h1>
+        <!-- Formulário de entrada -->
+        <form id="stteForm">
+            <label>Analista NOC:</label>
+            <input type="text" id="analista" placeholder="DIGITE O ANALISTA">
 
-    <label for="analista">ANALISTA NOC:</label>
-    <input type="text" id="analista" placeholder="Analista NOC">
+            <label>Supervisor:</label>
+            <input type="text" id="supervisor" placeholder="DIGITE O SUPERVISOR">
 
-    <label for="supervisor">SUPERVISOR:</label>
-    <input type="text" id="supervisor" placeholder="Supervisor">
+            <label>CN:</label>
+            <select id="cn">
+                <option value="91">91 Belém</option>
+                <option value="92">92 Amazonas</option>
+                <option value="93">93 Roraima</option>
+                <option value="94">94 Santarém</option>
+                <option value="95">95 Boa Vista</option>
+                <option value="96">96 Macapá</option>
+                <option value="98">98 São Luís</option>
+                <option value="99">99 Imperatriz</option>
+            </select>
 
-    <label for="cn">CN:</label>
-    <select id="cn">
-        <option value="91">91 - Belém</option>
-        <option value="92">92 - Amazonas</option>
-        <option value="93">93 - Santarém</option>
-        <option value="94">94 - Marabá</option>
-        <option value="95">95 - Roraima</option>
-        <option value="96">96 - Macapá</option>
-        <option value="98">98 - Maranhão</option>
-        <option value="99">99 - Imperatriz</option>
-    </select>
+            <label>Estação:</label>
+            <input type="text" id="estacao" placeholder="DIGITE A ESTAÇÃO">
 
-    <label for="estacao">ESTAÇÃO:</label>
-    <input type="text" id="estacao" placeholder="Estação">
+            <label>Alarme:</label>
+            <select id="alarme" onchange="calculateSLA()">
+                <option value="ABAT">ABAT (SLA 4 HORAS)</option>
+                <option value="AC">AC (SLA 4 HORAS)</option>
+                <option value="ATEMP">ATEMP (SLA 4 HORAS)</option>
+                <option value="AFRET">AFRET (SLA 24 HORAS)</option>
+            </select>
 
-    <label for="alarme">ALARME:</label>
-    <select id="alarme">
-        <option value="AC">AC (SLA: 4 horas)</option>
-        <option value="ADIF">ADIF (SLA: 4 horas)</option>
-        <option value="ATEMP">ATEMP (SLA: 4 horas)</option>
-        <option value="AFRET">AFRET (SLA: 24 horas)</option>
-        <option value="ABAT">ABAT (SLA: 4 horas)</option>
-    </select>
+            <label>AMI:</label>
+            <input type="text" id="ami" placeholder="DIGITE O AMI">
 
-    <label for="ami">AMI:</label>
-    <input type="text" id="ami" placeholder="AMI">
+            <label>INC:</label>
+            <input type="text" id="inc" placeholder="DIGITE O INC">
 
-    <label for="ral">INC:</label>
-    <input type="text" id="ral" placeholder="INC">
+            <label>Hora do Acionamento:</label>
+            <input type="time" id="horaAcionamento" readonly>
 
-    <label for="prev_tecnico">PREVISÃO:</label>
-    <input type="number" id="prev_tecnico" placeholder="Previsão do Técnico">
+            <label>Previsão:</label>
+            <input type="time" id="previsaoTec">
 
-    <label for="tecnico">TÉCNICO:</label>
-    <input type="text" id="tecnico" placeholder="Técnico Acionado">
+            <label>Técnico:</label>
+            <input type="text" id="tecnico" placeholder="DIGITE O TÉCNICO">
 
-    <button onclick="gerarInformativo()">Gerar Informativo</button>
+            <div class="checkbox-group">
+                <input type="checkbox" id="destacar">
+                <label for="destacar">Destacar com * para WhatsApp (negrito)</label>
+            </div>
 
-    <div id="resultado"></div>
-    <button id="copiarBtn" style="display:none;" onclick="copiarTexto()">Copiar Informações</button>
+            <button type="button" onclick="gerarAcionamento()">Gerar Acionamento</button>
+            <button type="button" onclick="copiarAcionamento()">Copiar Acionamento</button>
+        </form>
+
+        <div id="resultado"></div>
+        <button type="button" onclick="toggleTheme()">Alternar Modo Claro/Escuro</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
