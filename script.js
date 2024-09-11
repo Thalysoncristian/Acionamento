@@ -1,56 +1,82 @@
-function adicionarHoras(horas) {
-    let agora = new Date();
-    agora.setHours(agora.getHours() + horas);
-    return agora.toLocaleString('pt-BR').toUpperCase();
+function setCurrentTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('horaAcionamento').value = `${hours}:${minutes}`;
 }
 
-function obterHoraAtual() {
-    let agora = new Date();
-    return agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }).toUpperCase();
+function calculateSLA() {
+    const alarme = document.getElementById('alarme').value;
+    const acionamento = document.getElementById('horaAcionamento').value;
+
+    let slaHours = 0;
+
+    switch (alarme) {
+        case 'ABAT':
+        case 'AC':
+        case 'ATEMP':
+            slaHours = 4;
+            break;
+        case 'AFRET':
+            slaHours = 24;
+            break;
+        default:
+            slaHours = 0;
+    }
+
+    if (acionamento && slaHours > 0) {
+        const [hours, minutes] = acionamento.split(':');
+        const slaDate = new Date();
+        slaDate.setHours(parseInt(hours) + slaHours);
+        slaDate.setMinutes(parseInt(minutes));
+
+        const slaTime = `${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
+        document.getElementById('previsaoTec').value = slaTime;
+        return slaTime;  // Retorna a previsão
+    }
 }
 
-function gerarInformativo() {
-    const analista = document.getElementById('analista').value.toUpperCase();
-    const supervisor = document.getElementById('supervisor').value.toUpperCase();
-    const cn = document.getElementById('cn').value;
-    const estacao = document.getElementById('estacao').value.toUpperCase();
-    const alarme = document.getElementById('alarme').value.toUpperCase();
-    const ami = document.getElementById('ami').value.toUpperCase();
-    const ral = document.getElementById('ral').value.toUpperCase() || "SEM INC";
-    const prev_tecnico = parseInt(document.getElementById('prev_tecnico').value);
-    const tecnico = document.getElementById('tecnico').value.toUpperCase();
+function gerarAcionamento() {
+    const analista = document.getElementById("analista").value.toUpperCase();
+    const supervisor = document.getElementById("supervisor").value.toUpperCase();
+    const cn = document.getElementById("cn").value;
+    const estacao = document.getElementById("estacao").value.toUpperCase();
+    const alarme = document.getElementById("alarme").value;
+    const ami = document.getElementById("ami").value.toUpperCase();
+    const inc = document.getElementById("inc").value.toUpperCase();
+    const horaAcionamento = document.getElementById("horaAcionamento").value;
+    const previsaoTec = document.getElementById("previsaoTec").value;
+    const sla = calculateSLA(); // Obter SLA atualizado
+    const tecnico = document.getElementById("tecnico").value.toUpperCase();
+    const destacar = document.getElementById("destacar").checked;
 
-    const slaHoras = alarme === "AFRET" ? 24 : 4;
-    const horaAcionamento = obterHoraAtual();
-    const previsaoTec = adicionarHoras(prev_tecnico);
-    const sla = adicionarHoras(slaHoras);
+    const asterisk = destacar ? '*' : '';
 
-    const resultado = `
-        INFORMATIVO DE ACIONAMENTO
-        ANALISTA NOC: ${analista}
-        SUPERVISOR: ${supervisor}
-        CN: ${cn}
-        ESTAÇÃO: ${estacao}
-        ALARME: ${alarme}
-        AMI: ${ami}
-        INC: ${ral}
-        HORA DO ACIONAMENTO: ${horaAcionamento}
-        PREVISÃO: ${previsaoTec}
-        SLA: ATÉ ${sla}
-        TÉCNICO: ${tecnico}
+    // Gerar o texto do acionamento com SLA ATÉ
+    let resultado = `
+        ${asterisk}INFORMATIVO DE ACIONAMENTO${asterisk}
+        ${asterisk}ANALISTA NOC:${asterisk} ${analista}
+        ${asterisk}SUPERVISOR:${asterisk} ${supervisor}
+        ${asterisk}CN:${asterisk} ${cn}
+        ${asterisk}ESTAÇÃO:${asterisk} ${estacao}
+        ${asterisk}ALARME:${asterisk} ${alarme}
+        ${asterisk}AMI:${asterisk} ${ami}
+        ${asterisk}INC:${asterisk} ${inc}
+        ${asterisk}HORA DO ACIONAMENTO:${asterisk} ${horaAcionamento}
+        ${asterisk}PREVISÃO:${asterisk} ${previsaoTec}
+        ${asterisk}SLA ATÉ:${asterisk} ${sla}
+        ${asterisk}TÉCNICO ACIONADO:${asterisk} ${tecnico}
     `;
 
-    document.getElementById('resultado').innerHTML = resultado;
-    document.getElementById('copiarBtn').style.display = 'block';
+    document.getElementById("resultado").innerText = resultado.trim();
 }
 
-function copiarTexto() {
-    const texto = document.getElementById('resultado').innerText;
-    const textarea = document.createElement('textarea');
-    textarea.value = texto;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    alert("Informações copiadas!");
+function copiarAcionamento() {
+    const resultado = document.getElementById("resultado").innerText;
+    navigator.clipboard.writeText(resultado);
+    alert("Acionamento copiado para a área de transferência!");
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark');
 }
