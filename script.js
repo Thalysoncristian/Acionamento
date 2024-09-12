@@ -30,13 +30,16 @@ function calculateSLA() {
         slaDate.setHours(parseInt(hours) + slaHours);
         slaDate.setMinutes(parseInt(minutes));
 
-        const slaTime = `${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
-        document.getElementById('previsaoTec').value = slaTime;
-        return slaTime;  // Retorna a previsão
+        const slaDateFormatted = `${slaDate.toLocaleDateString()} ${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
+        document.getElementById('previsaoTec').value = `${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
+        return slaDateFormatted;  // Retorna a previsão com data
     }
 }
 
 function gerarAcionamento() {
+    // Atualizar a hora do acionamento com a hora atual
+    setCurrentTime();
+
     const analista = document.getElementById("analista").value.toUpperCase();
     const supervisor = document.getElementById("supervisor").value.toUpperCase();
     const cn = document.getElementById("cn").value;
@@ -52,7 +55,7 @@ function gerarAcionamento() {
 
     const asterisk = destacar ? '*' : '';
 
-    // Gerar o texto do acionamento com SLA ATÉ
+    // Gerar o texto do acionamento com SLA ATÉ incluindo a data
     let resultado = `
         ${asterisk}INFORMATIVO DE ACIONAMENTO${asterisk}
         ${asterisk}ANALISTA NOC:${asterisk} ${analista}
