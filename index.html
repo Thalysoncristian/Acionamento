@@ -6,7 +6,7 @@
     <title>Informativo de Acionamento - STTE</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="setCurrentTime()">
+<body>
     <div class="container">
         <h1>Informativo de Acionamento - STTE</h1>
 
@@ -48,10 +48,10 @@
             <input type="text" id="inc" placeholder="DIGITE O INC">
 
             <label>Hora do Acionamento:</label>
-            <input type="time" id="horaAcionamento" readonly>
+            <input type="time" id="horaAcionamento" required>
 
             <label>Previsão:</label>
-            <input type="time" id="previsaoTec">
+            <input type="time" id="previsaoTec" required>
 
             <label>Técnico:</label>
             <input type="text" id="tecnico" placeholder="DIGITE O TÉCNICO">
