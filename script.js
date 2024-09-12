@@ -1,10 +1,4 @@
-function setCurrentTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('horaAcionamento').value = `${hours}:${minutes}`;
-}
-
+// Função para calcular o SLA
 function calculateSLA() {
     const alarme = document.getElementById('alarme').value;
     const acionamento = document.getElementById('horaAcionamento').value;
@@ -32,14 +26,12 @@ function calculateSLA() {
 
         const slaDateFormatted = `${slaDate.toLocaleDateString()} ${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
         document.getElementById('previsaoTec').value = `${String(slaDate.getHours()).padStart(2, '0')}:${String(slaDate.getMinutes()).padStart(2, '0')}`;
-        return slaDateFormatted;  // Retorna a previsão com data
+        return slaDateFormatted;
     }
 }
 
+// Função para gerar o acionamento
 function gerarAcionamento() {
-    // Atualizar a hora do acionamento com a hora atual
-    setCurrentTime();
-
     const analista = document.getElementById("analista").value.toUpperCase();
     const supervisor = document.getElementById("supervisor").value.toUpperCase();
     const cn = document.getElementById("cn").value;
@@ -55,7 +47,6 @@ function gerarAcionamento() {
 
     const asterisk = destacar ? '*' : '';
 
-    // Gerar o texto do acionamento com SLA ATÉ incluindo a data
     let resultado = `
         ${asterisk}INFORMATIVO DE ACIONAMENTO${asterisk}
         ${asterisk}ANALISTA NOC:${asterisk} ${analista}
@@ -74,12 +65,14 @@ function gerarAcionamento() {
     document.getElementById("resultado").innerText = resultado.trim();
 }
 
+// Função para copiar o acionamento gerado
 function copiarAcionamento() {
     const resultado = document.getElementById("resultado").innerText;
     navigator.clipboard.writeText(resultado);
     alert("Acionamento copiado para a área de transferência!");
 }
 
+// Função para alternar entre modo claro e escuro
 function toggleTheme() {
     document.body.classList.toggle('dark');
 }
